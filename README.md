@@ -173,7 +173,43 @@ void processCustomer(Customer customer) {
 }
 ```
 
+Let's dive into more **advanced and complex** scenarios demonstrating the power of **Record Patterns in Java 21**
 
+**Scenario 1: Deeply Nested Data Structures**
 
+Imagine we're working with a user information structure nested several levels deep:
+
+```java
+record Address(String street, String city, String zipCode) {}
+record Customer(String name, Address address) {}
+record Order(int orderId, Customer customer, List<LineItem> items) {}
+record LineItem(String product, int quantity) {}
+```
+
+**Task: Get Cities of Customers With Large Orders**
+
+```java
+void processOrders(List<Order> orders) {
+    Set<String> citiesWithLargeOrders = orders.stream()
+                                              .filter(order -> largeOrder(order)) 
+                                              .flatMap(order -> extractCities(order).stream()) 
+                                              .collect(Collectors.toSet());
+
+    System.out.println(citiesWithLargeOrders);
+}
+
+private boolean largeOrder(Order order) {
+    // ... logic to determine if an order is large
+    return order.items().stream().mapToInt(LineItem::quantity).sum() > 100;
+}
+
+private List<String> extractCities(Order order) {
+    if (order instanceof Order(_, Customer(_, Address(_, String city, _)), _)) {
+        return List.of(city);
+    } else {
+        return List.of();
+    }
+}
+```
 
 
