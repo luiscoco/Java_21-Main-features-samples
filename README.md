@@ -368,3 +368,169 @@ Keyboard             $ 45.50  x1
 String Templates make the report structure very readable
 
 **String.format** is used for detailed control over numeric and columnar formatting
+
+## 4. Scoped Values
+
+Scoped values introduce a safer way to use resources that need to be automatically closed
+
+Scoped values ensure correct closure, similar to try-with-resources but more versatile
+
+```java
+// Imagine a hypothetical 'AutoCloseableFile' here
+try (var file = new AutoCloseableFile("data.txt")) {
+    String content = file.readContent(); 
+    // ... do something with content 
+}  // 'file' is automatically closed here
+```
+
+Scoped values go beyond standard try-with-resources to enable more flexible resource handling
+
+```java
+void writeToFileAndDatabase(String data) throws IOException {
+   try (var fileWriter = new FileWriter("log.txt");
+        var dbConnection = database.getConnection()) {
+
+       fileWriter.write(data); 
+       dbConnection.execute("INSERT INTO logs VALUES (?)", data); 
+   } 
+} 
+```
+
+Let's delve into additional examples demonstrating the capabilities of Scoped Values in Java 21
+
+**Scenario 1: Implicit Database Connection Scope**
+
+Let's simulate a scenario where we establish a database connection and make it implicitly available to various data access methods
+
+**DatabaseConnection.java**
+
+```java
+import java.sql.SQLException;
+
+// Simulated class (you would normally interact with a real database library)
+public class DatabaseConnection implements AutoCloseable {
+
+    public DatabaseConnection() {
+        System.out.println("Opening database connection");
+    }
+
+    // Placeholder for simulating a database query 
+    public void executeQuery(String query) {
+        System.out.println("Executing query: " + query);
+    }
+
+    @Override
+    public void close() throws SQLException {
+        System.out.println("Closing database connection");
+    }
+}
+```
+
+**File 2: ScopedDatabase.java**
+
+```java
+public class ScopedDatabase {
+    public static void main(String[] args) {
+        ScopedValue.run(() -> new DatabaseConnection())
+                   .thenRun(ScopedDatabase::fetchData)
+                   .thenRun(ScopedDatabase::processData);
+    }
+
+    static void fetchData() {
+        DatabaseConnection conn = ScopedValue.currentOrNull(DatabaseConnection.class);
+        if (conn != null) {
+            conn.executeQuery("SELECT * FROM some_table"); 
+        } else {
+            System.out.println("Error: No database connection in scope");
+        }
+    }
+
+    static void processData() {
+        DatabaseConnection conn = ScopedValue.currentOrNull(DatabaseConnection.class);
+        if(conn != null) {
+            // ... Process fetched data (assuming results are available)
+            System.out.println("Processing fetched data..."); 
+        } else {
+            System.out.println("Error: No database connection in scope");
+        }
+    }
+}
+```
+
+**Explanation**
+
+**DatabaseConnection.java**: A simple simulation of a database connection to demonstrate auto-closing
+
+**ScopedDatabase.java**: main method launches the execution, establishing a Scoped Value holding the DatabaseConnection
+
+fetchData and processData access the shared database connection via ScopedValue.currentOrNull()
+
+**How to Run the application**
+
+**Save**: Create the two files above as DatabaseConnection.java and ScopedDatabase.java
+
+**Compile**: Ensure you have a suitable Java Development Kit (JDK) version  21 or above.  Compile both files from your terminal:
+
+```
+javac DatabaseConnection.java ScopedDatabase.java
+```
+
+Run: Execute the ScopedDatabase class:
+
+```
+java ScopedDatabase
+```
+
+**Expected Output (Illustrative)**:
+
+Opening database connection
+
+Executing query: SELECT * FROM some_table
+
+Processing fetched data...
+
+Closing database connection 
+
+**Scenario 2: Hierarchical Request Data**
+
+We can use Scoped Values to model **nested** request information or hierarchical contexts
+
+```java
+class User {
+    String name;
+    // ...
+}
+
+class HttpRequest {
+    String ipAddress;
+    // ...
+}
+
+public class ScopedRequestData {
+    public static void main(String[] args) {
+        User user = new User("Alice");
+        HttpRequest request = new HttpRequest("10.0.0.1");
+
+        ScopedValue.run(() -> user)
+                   .thenCombine( () -> request, ScopedRequestData::handleNestedRequest);
+    }
+
+    static void handleNestedRequest(User user, HttpRequest request) {
+        System.out.println("User: " + user.name);
+        System.out.println("Request IP: " + request.ipAddress);
+        // ... other nested processing
+    }
+}
+```
+
+**Notes**:
+
+**ScopedValue.run()** initializes a scope with the User object
+
+**thenCombine()** creates a nested scope including HttpRequest, combining data for the handleNestedRequest method
+
+**Key Points**
+
+**Versatility**: Scoped Values elegantly pass contextual information, manage resources, and represent layered structures
+
+**Composability**: Scoped Values integrate well with methods like thenRun and thenCombine for complex use cases
