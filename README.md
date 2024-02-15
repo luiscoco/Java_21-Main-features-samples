@@ -1,6 +1,5 @@
 # Java 21 Main features samples 
 
-
 ## 1. Pattern Matching for switch
 
 This feature extends the capabilities of switch expressions and statements, allowing you to express more complex and sophisticated data pattern matching
@@ -616,3 +615,80 @@ private void handleClientRequest(Socket clientSocket) {
     // Read request, process, send response...
 }
 ```
+
+## 6. SequencedCollection
+
+Let's explore how you can leverage Java 21's SequencedCollection interface with a few practical examples
+
+**Understanding SequencedCollection**
+
+The SequencedCollection interface provides a way to work with collections that have a defined order of elements. Key features include:
+
+**Getting First/Last**: Directly get the first (getFirst()) and last (getLast()) elements
+
+**Adding at Start/End**: Add elements to the beginning (addFirst()) or end (addLast()) easily
+
+**Removing First/Last**: Conveniently remove the first (removeFirst()) or last (removeLast()) elements
+
+**Reversing**: Create a reversed view of the collection (reversed())
+
+**Example 1**: Basic Operations with ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class SequencedCollectionDemo {
+    public static void main(String[] args) {
+        List<String> myList = new ArrayList<>();
+        myList.add("Alice");
+        myList.add("Bob");
+        myList.add("Charlie");
+
+        // SequencedCollection features
+        myList.addFirst("Zara"); 
+        myList.addLast("Eve");
+
+        System.out.println("First: " + myList.getFirst());
+        System.out.println("Last: " + myList.getLast());
+
+        // Removal
+        myList.removeFirst();
+        myList.removeLast();
+
+        System.out.println("Modified List: " + myList); 
+    }
+}
+```
+
+**Example 2: SequencedSet with LinkedHashSet**
+
+```java
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class SequencedSetDemo {
+    public static void main(String[] args) {
+        Set<Integer> mySet = new LinkedHashSet<>(); 
+        mySet.add(5);
+        mySet.add(1);
+        mySet.add(3);
+
+        System.out.println("First element: " + mySet.getFirst()); 
+
+        // Reverse the order
+        SequencedSet<Integer> reversedSet = mySet.reversed();
+        System.out.println("Reversed set: " + reversedSet); 
+    }
+}
+```
+
+**Important Considerations**
+
+**Compatibility**: Existing collections like ArrayList and LinkedList automatically get these features because they now implement SequencedCollection
+
+**Sets**: LinkedHashSet implements SequencedSet (a sub-interface), providing ordering in sets
+
+**Flexibility**: Sequenced collections make tasks like working with the ends of a collection or reversing much more intuitive
+
+
