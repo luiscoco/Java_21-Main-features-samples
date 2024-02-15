@@ -186,7 +186,7 @@ record Order(int orderId, Customer customer, List<LineItem> items) {}
 record LineItem(String product, int quantity) {}
 ```
 
-**Task: Get Cities of Customers With Large Orders**
+Get Cities of Customers With Large Orders
 
 ```java
 void processOrders(List<Order> orders) {
@@ -223,7 +223,7 @@ record SuccessResponse(String message, Object data) extends ApiResponse {}
 record ErrorResponse(int code, String message) extends ApiResponse {}
 ```
 
-**Task: Selective Data Extraction**
+Selective Data Extraction
 
 ```java
 void handleApiResponse(ApiResponse response) {
