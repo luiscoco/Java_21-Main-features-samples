@@ -534,3 +534,22 @@ public class ScopedRequestData {
 **Versatility**: Scoped Values elegantly pass contextual information, manage resources, and represent layered structures
 
 **Composability**: Scoped Values integrate well with methods like thenRun and thenCombine for complex use cases
+
+## 5. Structured Concurrency
+
+Structured concurrency simplifies the **management of multiple threads**
+
+Instead of dealing with threads directly, it **treats multiple tasks as a single unit of work** for improved reliability and error handling
+
+```java
+ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+try (executor) {
+    Future<String> task1 = executor.submit(() -> "Result of Task 1");
+    Future<Integer> task2 = executor.submit(() -> 42);
+
+    System.out.println(task1.get()); 
+    System.out.println(task2.get());
+} 
+```
+
