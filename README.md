@@ -245,3 +245,126 @@ void handleApiResponse(ApiResponse response) {
 **Type Specialization**: When 'data' in SuccessResponse has a specific type, add it to the pattern for direct access (e.g., SuccessResponse(..., Customer data))
 
 **Polymorphism**: Combine the power of inheritance and record patterns for specific handling based on concrete types
+
+## 3. String Templates
+
+String templates enhance Java's string **formatting** capabilities, enabling you to embed expressions directly within strings:
+
+```java
+int width = 5;
+int height = 8;
+String message = """
+                 Shape dimensions:
+                 Width:  %d
+                 Height: %d
+                 """.formatted(width, height);
+System.out.println(message);
+```
+
+String templates can handle **rich formatting**, including number formatting and alignment:
+
+```java
+double price = 129.95;
+String formatted = """
+                   Invoice
+                   Item: Widget XYZ
+                   Price: $%,10.2f
+                   """.formatted(price);
+System.out.println(formatted);
+```
+
+Let's explore some advanced string formatting scenarios using features introduced in Java 21.
+
+**String Templates**
+
+Java 21 features String Templates, a powerful way to **embed expressions** directly into string literals. Let's illustrate:
+
+```java
+int age = 35;
+String name = "Alice";
+double temperature = 23.6;
+
+String formattedMessage = `Hello, my name is ${name} and I am ${age} years old. 
+                           The current temperature is ${temperature} degrees Celsius.`;
+
+System.out.println(formattedMessage);
+```
+
+**Output**:
+
+```
+Hello, my name is Alice and I am 35 years old. The current temperature is 23.6 degrees Celsius.
+Notice how expressions within ${ } are automatically evaluated and embedded within the string.
+```
+
+**Sequenced Collections**
+
+Sequenced Collections provide greater control over the processing of collections in a sequential manner. Let's combine this with string formatting:
+
+```java
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+List<String> fruits = List.of("Apple", "Banana", "Mango", "Orange");
+
+String formattedList = fruits.stream()
+        .map(String::toUpperCase) 
+        .collect(Collectors.joining(", ", "[", "]"));
+
+System.out.println(formattedList);
+```
+
+**Output**:
+
+```
+[APPLE, BANANA, MANGO, ORANGE] 
+```
+
+**Explanation**:
+
+We create a list of fruits
+
+Using a stream, we convert each fruit to uppercase
+
+The Collectors.joining() method in Sequenced Collections helps us neatly format the elements, adding the prefix "[", suffix "]", and a comma separator
+
+**Complex Example: Formatting a Report**
+
+Let's craft a more elaborate example:
+
+```java
+class Product {
+    String name;
+    double price;
+    int quantity;
+
+    // Constructor, getters, setters 
+}
+
+// ... (Assume Product class is defined)
+
+List<Product> order = new ArrayList<>();
+order.add(new Product("Laptop", 999.99, 2));
+order.add(new Product("Keyboard", 45.50, 1));
+
+String report = `--- Order Summary ---\n` +
+                order.stream()
+                     .map(p -> String.format("%-20s $%8.2f  x%2d\n", p.name, p.price, p.quantity))
+                     .collect(Collectors.joining());
+
+System.out.println(report);
+```
+
+**Output**:
+
+```
+--- Order Summary ---
+Laptop               $999.99  x2
+Keyboard             $ 45.50  x1
+```
+
+**Notes**:
+
+String Templates make the report structure very readable
+
+**String.format** is used for detailed control over numeric and columnar formatting
