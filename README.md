@@ -738,3 +738,55 @@ $ java.exe --enable-preview --source 21 HelloWorld.Java
 // Prints
 Hello, World!
 ```
+
+## 8. Unnamed Patterns and Variables
+
+These Java 21 features help reduce verbosity and streamline code, mainly in pattern matching scenarios
+
+**Unnamed Patterns**: In pattern matching (with instanceof or record patterns), sometimes you only care about whether a value matches a particular type but don't need to capture that value in a variable
+
+Unnamed patterns let you write a simple underscore (_) where you would normally place a variable name
+
+**Unnamed Variables**:  The underscore (_) can also be used as a variable name
+
+This signifies that you intentionally discard the value, making it clear you're not using it later in the code
+
+Unnamed Patterns with instanceof:
+
+Java
+Object obj = "Hello";
+if (obj instanceof String _) { // The '_' indicates we don't need a variable
+    System.out.println("The object is a String");
+}
+Usa el código con precaución.
+Unnamed Patterns in Record Patterns:
+
+Java
+record Point(int x, int y) {}
+
+void processPoint(Object obj) {
+    if (obj instanceof Point(_, int y)) { 
+        System.out.println("Y-coordinate is: " + y);
+    } 
+}
+Usa el código con precaución.
+Here, we ignore the x-coordinate of a Point object.
+
+Unnamed Variables to Eliminate Warnings:
+
+Java
+for (var _ : myList) { 
+    // Do something, but don't use the loop variable
+}
+Usa el código con precaución.
+Using _ prevents compiler warnings about an unused variable.
+
+Key Benefits
+
+Cleaner Code: Unnamed patterns and variables reduce visual clutter and shift focus to relevant code sections.
+Compiler Assistance: The compiler ensures you're not accidentally losing value by not naming a pattern or variable.
+Single Responsibility: This feature nicely complements record patterns and the instanceof operator to encourage the Single Responsibility Principle (making every part of your code have a clear purpose).
+Points to Note
+
+Naming Restrictions: Using _ as a variable or pattern name was technically invalid in older Java versions. Java 21 leverages this to introduce the feature seamlessly.
+Feature State: Consider these features as "preview" in Java 21. This means they might change in future versions based on feedback.
