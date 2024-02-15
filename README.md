@@ -574,3 +574,25 @@ try (executor) {
     }
 } 
 ```
+
+Structured concurrency radically simplifies working with multiple concurrent tasks within a single unit
+
+Coordinating and Handling Errors Among Tasks:
+
+```java
+ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+try (executor) {
+    Scope scope = new StructuredTaskScope.ShutdownOnFailure();
+    Future<String> task1 = scope.fork(() -> performNetworkOperation());
+    Future<Integer> task2 = scope.fork(() -> computeExpensiveValue());
+
+    scope.join();           // Wait for both tasks to complete
+    scope.throwIfFailed();  // Propagate any exceptions
+
+    System.out.println("Network result: " + task1.resultNow());
+    System.out.println("Computed value: " + task2.resultNow());
+} catch (ExecutionException | InterruptedException e) {
+    System.out.println("Task failed: " + e.getMessage());
+}
+```
