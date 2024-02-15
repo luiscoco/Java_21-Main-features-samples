@@ -596,3 +596,23 @@ try (executor) {
     System.out.println("Task failed: " + e.getMessage());
 }
 ```
+
+**Virtual threads** introduce lightweight threading for massively scalable applications
+
+Handling Many Concurrent Clients:
+
+```java
+ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+try (var serverSocket = new ServerSocket(8080)) {
+    while (true) {
+        try (Socket clientSocket = serverSocket.accept()) {
+             executor.submit(() -> handleClientRequest(clientSocket));
+        }
+    }
+}
+
+private void handleClientRequest(Socket clientSocket) {
+    // Read request, process, send response...
+}
+```
