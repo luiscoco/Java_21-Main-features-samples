@@ -143,6 +143,36 @@ public static double calculateTotalArea(Shape shape) {
 
 **Guarded Patterns**: We could add guards to patterns (e.g., case Triangle(double base, double height) when base > 0) for even finer-grained matching.
 
+## 2. Record Patterns
+
+Record patterns streamline working with record types, providing concise syntax for deconstructing them
+
+```java
+record Point(int x, int y) {}
+
+void movePoint(Object obj) {
+    if (obj instanceof Point(int x, int y)) {
+        // x and y are in scope here
+        System.out.println("Coordinates: (" + x + ", " + y + ")");
+    }
+}
+```
+
+Record patterns can be **nested** to extract data from more complex record hierarchies:
+
+```java
+record Customer(String name, Address address) {}
+record Address(String street, String city, String zipCode) {}
+
+void processCustomer(Customer customer) {
+    if (customer instanceof Customer(String name, Address(String _, String city, _))) {
+        if (city.equals("New York")) {
+            System.out.println("Customer " + name + " is from New York.");
+        }
+    }
+}
+```
+
 
 
 
