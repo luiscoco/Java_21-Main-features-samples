@@ -691,4 +691,50 @@ public class SequencedSetDemo {
 
 **Flexibility**: Sequenced collections make tasks like working with the ends of a collection or reversing much more intuitive
 
+## 7. Unnamed Classes and Instance Main Methods
 
+Since Java 21, we can use unnamed classes and instance main methods that allow us to bootstrap a class with minimal syntax
+
+No class declaration is required
+
+Java keywords public and static are no longer required
+
+Main method argument args is optional
+
+Prior to Java 21, we had to write the following class to execute a simple “Hello, World!” message:
+
+**HelloWorld.Java before Java 21**
+
+```java
+package com.company.app;
+
+public class HelloWorld { 
+
+  public static void main(String[] args) { 
+    System.out.println("Hello, World!");
+  }
+}
+```
+
+Since Java 21, the following code is a fully functional class that will print the output “Hello, World!” to the console
+
+We can store this class in any Java file such as HelloWorld.Java and then we can run it
+
+**HelloWorld.Java in Java 21**
+
+```java
+void main() { 
+  System.out.println("Hello, World!");
+}
+```
+
+This is a preview language feature in Java 21, disabled by default. Use --enable-preview flag to use this feature
+
+```
+$ java.exe --enable-preview --source 21 HelloWorld.Java
+```
+
+```
+// Prints
+Hello, World!
+```
