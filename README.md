@@ -1,4 +1,4 @@
-# Java 21 Main features samples 
+# Java 21 new features samples 
 
 ## 1. Pattern Matching for switch
 
