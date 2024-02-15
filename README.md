@@ -553,3 +553,24 @@ try (executor) {
 } 
 ```
 
+Structured concurrency offers elegant **error handling for concurrent tasks**
+
+```java
+ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+try (executor) {
+    var results = executor.invokeAll(List.of(
+            () -> possiblyFailingTask1(),
+            () -> possiblyFailingTask2()
+    ));
+
+    // Process results, potentially handle exceptions if any task failed
+    for (Future<String> result : results) {
+        try {
+            System.out.println(result.get());
+        } catch (ExecutionException ex) {
+            System.out.println("Task failed: " + ex.getCause().getMessage());
+        }
+    }
+} 
+```
