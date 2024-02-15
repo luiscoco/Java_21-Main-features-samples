@@ -6,13 +6,64 @@
 This feature extends the capabilities of switch expressions and statements, allowing you to express more complex and sophisticated data pattern matching
 
 ```java
-public static String describeShape(Object shape) {
-    return switch (shape) {
-        case Circle c    -> "Circle with radius " + c.getRadius();
-        case Rectangle r -> "Rectangle with width " + r.getWidth() + " and height " + r.getHeight();
-        case null        -> "It's null"; 
-        default          -> "Some other shape"; 
-    };
+// Define the Shape interface
+interface Shape {}
+
+// Circle class implementing Shape interface
+class Circle implements Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+}
+
+// Rectangle class implementing Shape interface
+class Rectangle implements Shape {
+    private double width;
+    private double height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+}
+
+// Main class
+public class ShapeDescriber {
+
+    // describeShape method
+    public static String describeShape(Object shape) {
+        return switch (shape) {
+            case Circle c -> "Circle with radius " + c.getRadius();
+            case Rectangle r -> "Rectangle with width " + r.getWidth() + " and height " + r.getHeight();
+            case null -> "It's null";
+            default -> "Some other shape";
+        };
+    }
+
+    // Main method to test the describeShape function
+    public static void main(String[] args) {
+        Circle circle = new Circle(5.0);
+        Rectangle rectangle = new Rectangle(4.0, 6.0);
+        
+        System.out.println(describeShape(circle)); // Prints description of the circle
+        System.out.println(describeShape(rectangle)); // Prints description of the rectangle
+        System.out.println(describeShape(null)); // Prints null case
+        System.out.println(describeShape("String")); // Example for default case
+    }
 }
 ```
 
