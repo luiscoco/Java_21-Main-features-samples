@@ -797,3 +797,71 @@ Using **_** prevents compiler warnings about an unused variable
 **Naming Restrictions**: Using _ as a variable or pattern name was technically invalid in older Java versions. Java 21 leverages this to introduce the feature seamlessly
 
 **Feature State**: Consider these features as "preview" in Java 21. This means they might change in future versions based on feedback
+
+## 9. Virtual Threads
+
+**What are Virtual Threads?**
+
+**Lightweight Threads**: Virtual threads are a fundamental change in how Java handles concurrency
+
+They are threads managed primarily by the Java runtime rather than directly by the operating system
+
+This makes them significantly cheaper to create, sustain, and switch between compared to traditional OS-level threads
+
+**Simplified Concurrency**: Virtual threads aim to make writing highly concurrent applications in Java less complicated and resource-intensive
+
+You gain the benefits of multi-threading without worrying as much about thread pool management and resource limitations
+
+**Why They Matter?**
+
+**Scalability**: Virtual threads empower you to write applications that can handle massive numbers of concurrent operations (especially I/O bound operations) without running out of memory or overloading the system
+
+**Simplified Code**: Code written with virtual threads often looks synchronous even though it's asynchronous – fewer callbacks and complex threading logic make the code easier to write and reason about
+
+**Basic Execution**:
+
+```java
+Thread.startVirtualThread(() -> {
+    System.out.println("Hello from a virtual thread!");
+}).join();
+```
+
+```java
+public class SimpleServer {
+    public static void main(String[] args) {
+        try (var serverSocket = new ServerSocket(8080)) {
+            while (true) {
+                try (var clientSocket = serverSocket.accept()) {
+                    // Create a virtual thread to handle each client request
+                    Thread.startVirtualThread(() -> {
+                        System.out.println("New client connected!");
+                        // ... (code to process the client's request)
+                    });
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error handling client: " + e.getMessage()); 
+        }
+    }
+}
+```
+
+**Key Concepts**
+
+**Creation**: You start them using Thread.startVirtualThread()
+
+**Schedulers**: The Java runtime automatically schedules virtual threads onto a small pool of operating system threads (often called carrier threads)
+
+**Blocking**: When a virtual thread performs a blocking operation (like file or network I/O), the runtime can "park" the virtual thread and run others, rather than blocking the entire carrier thread
+
+**Important Notes**
+
+**Not for Everything**: Virtual threads are mainly beneficial for I/O-bound workloads. CPU-intensive tasks still might be better suited for traditional threads
+
+**Benefits in a Nutshell**
+
+Virtual threads enable you to write Java applications that:
+
+Handle many more concurrent connections/requests with a smaller resource footprint
+
+Can maintain cleaner, more synchronous-looking code, especially in scenarios with network or file I/O
