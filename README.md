@@ -212,4 +212,36 @@ private List<String> extractCities(Order order) {
 }
 ```
 
+**Scenario 2: Polymorphism & Record Patterns**
 
+Consider a scenario where we have an abstract base class, with derived classes implemented as records:
+
+```java
+abstract class ApiResponse {}
+
+record SuccessResponse(String message, Object data) extends ApiResponse {}
+record ErrorResponse(int code, String message) extends ApiResponse {}
+```
+
+**Task: Selective Data Extraction**
+
+```java
+void handleApiResponse(ApiResponse response) {
+    if (response instanceof SuccessResponse(String msg, Object data)) {
+        // Handle successful data extraction (knowing the type of 'data')
+        System.out.println("Success: " + msg); 
+        // Process the 'data' object based on its expected type
+    } else if (response instanceof ErrorResponse(int code, String errMsg)) {
+        // Handle error scenario based on error code and message
+        System.out.println("Error (" + code + "): " + errMsg);
+    } 
+}
+```
+
+**Key Points**:
+
+**Deep Nesting**: Record patterns elegantly deconstruct even several layers deep
+
+**Type Specialization**: When 'data' in SuccessResponse has a specific type, add it to the pattern for direct access (e.g., SuccessResponse(..., Customer data))
+
+**Polymorphism**: Combine the power of inheritance and record patterns for specific handling based on concrete types
