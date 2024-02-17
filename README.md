@@ -1,5 +1,19 @@
 # Java 21 new features samples 
 
+## Acronyms
+
+**JEP** (**Java Enhancement Proposal**): JEPs are the primary process for proposing and standardizing changes to the Java platform
+
+**JSRs**: Java Specification Requests
+
+## Reference sites
+
+For more info please visit these web sites:
+
+https://javaalmanac.io/
+
+https://github.com/akullpp/awesome-java
+
 ## 1. Pattern Matching for switch (JEP 441)
 
 This feature extends the capabilities of switch expressions and statements, allowing you to express more complex and sophisticated data pattern matching
