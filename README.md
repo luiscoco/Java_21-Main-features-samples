@@ -1,6 +1,6 @@
 # Java 21 new features samples 
 
-## 1. Pattern Matching for switch
+## 1. Pattern Matching for switch (JEP 441)
 
 This feature extends the capabilities of switch expressions and statements, allowing you to express more complex and sophisticated data pattern matching
 
@@ -142,7 +142,7 @@ public static double calculateTotalArea(Shape shape) {
 
 **Guarded Patterns**: We could add guards to patterns (e.g., case Triangle(double base, double height) when base > 0) for even finer-grained matching.
 
-## 2. Record Patterns
+## 2. Record Patterns (JEP 440)
 
 Record patterns streamline working with record types, providing concise syntax for deconstructing them
 
@@ -245,7 +245,7 @@ void handleApiResponse(ApiResponse response) {
 
 **Polymorphism**: Combine the power of inheritance and record patterns for specific handling based on concrete types
 
-## 3. String Templates
+## 3. String Templates (JEP 430)
 
 String templates enhance Java's string **formatting** capabilities, enabling you to embed expressions directly within strings:
 
@@ -368,7 +368,7 @@ String Templates make the report structure very readable
 
 **String.format** is used for detailed control over numeric and columnar formatting
 
-## 4. Scoped Values
+## 4. Scoped Values (JEP 446)
 
 Scoped values introduce a safer way to use resources that need to be automatically closed
 
@@ -534,7 +534,7 @@ public class ScopedRequestData {
 
 **Composability**: Scoped Values integrate well with methods like thenRun and thenCombine for complex use cases
 
-## 5. Structured Concurrency
+## 5. Structured Concurrency (JEP 453)
 
 Structured concurrency simplifies the **management of multiple threads**
 
@@ -616,7 +616,7 @@ private void handleClientRequest(Socket clientSocket) {
 }
 ```
 
-## 6. SequencedCollection
+## 6. SequencedCollection (JEP 431)
 
 Let's explore how you can leverage Java 21's SequencedCollection interface with a few practical examples
 
@@ -691,7 +691,7 @@ public class SequencedSetDemo {
 
 **Flexibility**: Sequenced collections make tasks like working with the ends of a collection or reversing much more intuitive
 
-## 7. Unnamed Classes and Instance Main Methods
+## 7. Unnamed Classes and Instance Main Methods (JEP 445)
 
 Since Java 21, we can use unnamed classes and instance main methods that allow us to bootstrap a class with minimal syntax
 
@@ -739,7 +739,7 @@ $ java.exe --enable-preview --source 21 HelloWorld.Java
 Hello, World!
 ```
 
-## 8. Unnamed Patterns and Variables
+## 8. Unnamed Patterns and Variables (JEP 443)
 
 These Java 21 features help reduce verbosity and streamline code, mainly in pattern matching scenarios
 
@@ -798,7 +798,7 @@ Using **_** prevents compiler warnings about an unused variable
 
 **Feature State**: Consider these features as "preview" in Java 21. This means they might change in future versions based on feedback
 
-## 9. Virtual Threads
+## 9. Virtual Threads (JEP 444)
 
 **What are Virtual Threads?**
 
